@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -19,6 +20,7 @@ const Header = ({
   drawerOpen,
   onDrawerOpen
 }) => {
+  const navigate = useNavigate();
   return (
     <AppBar
       position="fixed"
@@ -59,7 +61,7 @@ const Header = ({
           </IconButton>
           <IconButton
             sx={{ ml: 1 }}
-            onClick={{}}
+            onClick={() => navigate('/about')}
             color="inherit"
             aria-label="about"
           >

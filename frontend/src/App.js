@@ -20,6 +20,12 @@ function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(true);
+  const [activeRoute, setActiveRoute] = useState(window.location.pathname); // Add this line
+
+  // Add this handler
+  const handleNavigation = (path) => {
+    setActiveRoute(path);
+  };
 
   const theme = createAppTheme(darkMode);
 
@@ -68,6 +74,8 @@ function App() {
               onItemClick={() => setMobileOpen(false)}
               onDrawerClose={handleDrawerClose}
               darkMode={darkMode}
+              activeRoute={activeRoute}
+              onNavigate={handleNavigation}
               sx={{
                 display: { xs: 'block', sm: 'none' }
               }}
@@ -80,6 +88,8 @@ function App() {
               drawerWidth={drawerWidth}
               onDrawerClose={handleDrawerClose}
               darkMode={darkMode}
+              activeRoute={activeRoute}
+              onNavigate={handleNavigation}
               sx={{
                 display: { xs: 'none', sm: 'block' }
               }}
@@ -109,6 +119,7 @@ function App() {
             <Route path="/filemanager" element={<FileManager />} />
             <Route path="/audioeditor" element={<AudioEditor />} />
             <Route path="/setup" element={<Setup />} />
+              <Route path="/about" element={<About />} />
               <Route path="/addsong" element={<AddSong />} />
             </Routes>
           </Box>

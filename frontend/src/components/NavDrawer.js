@@ -1,21 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
   Drawer,
+  IconButton,
+  Divider
+} from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Link } from 'react-router-dom';
+import {
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Toolbar,
-  IconButton,
-  styled,
-  Divider,
 } from '@mui/material';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { menuItems, NavigationMenu } from '../config/menuItems';
-import { useTheme } from '@mui/material/styles';
+import { menuItems } from '../config/menuItems';
 
+// Add this styled component at the top of your file
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -23,6 +26,28 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
 }));
+
+export const NavigationMenu = ({ onItemClick, colors, activeRoute, onNavigate }) => {
+  return (
+    <List>
+      {menuItems.map((item) => (
+        <ListItem 
+          key={item.path}
+          className={activeRoute === item.path ? 'active' : ''}
+          onClick={() => {
+            if (onItemClick) onItemClick();
+            if (onNavigate) onNavigate(item.path);
+          }}
+        >
+          <Link to={item.path} style={{ display: 'flex', alignItems: 'center' }}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} />
+          </Link>
+        </ListItem>
+      ))}
+    </List>
+  );
+};
 
 const NavDrawer = ({
   variant,
@@ -32,7 +57,9 @@ const NavDrawer = ({
   sx = {},
   onItemClick,
   onDrawerClose,
-    darkMode
+  darkMode,
+  activeRoute,
+  onNavigate
 }) => {
   const theme = useTheme();
 
@@ -41,13 +68,15 @@ const NavDrawer = ({
       background: '#190060',
       text: '#a4b3b6',
       hover: '#444444',
-      divider: 'rgba(255, 255, 255, 0.12)'
+      divider: 'rgba(255, 255, 255, 0.12)',
+      active: '#2f1178' // Add this line - darker shade for active item
     },
     light: {
-      background: '#ffffff',
+      background: '#ffffffS',
       text: '#000000',
       hover: '#e0e0e0',
-      divider: 'rgba(0, 0, 0, 0.12)'
+      divider: 'rgba(0, 0, 0, 0.12)',
+      active: '#e3f2fd' // Add this line - lighter blue shade for active item
     }
   };
 
@@ -61,7 +90,12 @@ const NavDrawer = ({
         </IconButton>
       </DrawerHeader>
       <Divider sx={{ backgroundColor: colors.divider }} />
-      <NavigationMenu onItemClick={onItemClick} colors={colors} />
+      <NavigationMenu 
+        onItemClick={onItemClick} 
+        colors={colors} 
+        activeRoute={activeRoute}
+        onNavigate={onNavigate}
+      />
     </div>
   );
 
@@ -86,10 +120,16 @@ const NavDrawer = ({
           '& .MuiListItem-root': {
             '& a': {
               color: colors.text,
-              textDecoration: 'none'
+              textDecoration: 'none',
+              width: '100%',
+              padding: '8px 16px',
+              display: 'block'
             },
             '&:hover': {
               backgroundColor: colors.hover
+            },
+            '&.active': {
+              backgroundColor: colors.active
             }
           },
           '& a': {
@@ -102,7 +142,6 @@ const NavDrawer = ({
     >
       {drawer}
     </Drawer>
-
   );
 };
 

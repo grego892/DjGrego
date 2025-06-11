@@ -1,15 +1,15 @@
 import React from 'react';
 import { Typography } from '@mui/material';
+import packageInfo from '../../package.json';
+
 
 function About() {
   return (
     <div>
       <Typography variant="h4" gutterBottom>
-        About
+        Version: {packageInfo.version}
       </Typography>
-      <Typography paragraph>
-        This is a simple Song Management Application that allows you to maintain a list of your favorite songs.
-      </Typography>
+
     </div>
   );
 }
