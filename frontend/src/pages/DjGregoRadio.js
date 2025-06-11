@@ -5,7 +5,7 @@ function EntergyOutage() {
   return (
     <div>
       <iframe
-        src="https://www.etrviewoutage.com/map?state=TX"
+        src="https://radio.djgrego.com/public/djgrego_radio"
         title="Entergy Outage Map"
         width="100%"
         height="900px"

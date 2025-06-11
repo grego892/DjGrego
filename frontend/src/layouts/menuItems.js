@@ -42,7 +42,7 @@ export const menuItems = [
     items: readerItems,
     expandIcon: <ExpandMoreIcon />,
   },
-  { text: 'DjGrego Radio', icon: <RadioIcon />, path: '/djgregoradio' },
+  { text: 'DjGrego Radio', icon: <RadioIcon />, path: '/radio' },
 ];
 
 export const NavigationMenu = ({ onItemClick, colors }) => {
