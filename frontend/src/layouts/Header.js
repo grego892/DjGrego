@@ -32,9 +32,6 @@ const Header = ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
-        bgcolor: (theme) => darkMode ? '#002660' : '#ffffff',
-        color: (theme) => darkMode ? '#a4b3b6' : '#000000'
-
       }}
     >
       <Toolbar>

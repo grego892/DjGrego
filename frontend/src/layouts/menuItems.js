@@ -1,7 +1,4 @@
 import HomeIcon from '@mui/icons-material/Home';
-import AudioFileIcon from '@mui/icons-material/AudioFile';
-import EditIcon from '@mui/icons-material/Edit';
-import SettingsIcon from '@mui/icons-material/Settings';
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
 import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices';
 import TrafficIcon from '@mui/icons-material/Traffic';
@@ -36,9 +33,9 @@ export const readerItems = [
 export const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
   { text: 'Weather', icon: <ThunderstormIcon />, path: '/weather' },
-  { text: 'Entergy Outage', icon: <ElectricalServicesIcon />, path: '/fileManager' },
+  { text: 'Entergy Outage', icon: <ElectricalServicesIcon />, path: '/entergyoutage' },
   { text: 'Traffic', icon: <TrafficIcon />, path: '/traffic' },
-  { text: 'Bird', icon: <TwitterIcon />, path: '/setup' },
+  { text: 'Bird', icon: <TwitterIcon />, path: '/bird' },
   {
     text: 'Readers',
     icon: <CellTowerIcon />,

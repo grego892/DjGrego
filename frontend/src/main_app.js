@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { Box, CssBaseline } from '@mui/material';
 import { createAppTheme } from './theme/theme';
-import Header from './components/Header';
+import Header from './layouts/Header';
 import NavDrawer from './components/NavDrawer';
 import Home from './pages/Home';
 import AddSong from './components/AddSong';

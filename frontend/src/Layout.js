@@ -1,18 +1,15 @@
-
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { Box, CssBaseline } from '@mui/material';
 import { createAppTheme } from './theme/theme';
-import Header from './components/Header';
+import Header from './layouts/Header';
 import NavDrawer from './components/NavDrawer';
-import Home from './pages/Home';
-import AddSong from './components/AddSong';
-import About from './pages/About';
+import { routes } from './routes/index';
 
 const drawerWidth = 240;
 
-function App() {
+function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -84,10 +81,13 @@ function App() {
             }}
           >
             <Routes>
-              <Route path="/" element={<Home />} />
-                <Route path="/" element={<Weather />} />
-              <Route path="/add" element={<AddSong />} />
-              <Route path="/about" element={<About />} />
+              {routes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
             </Routes>
           </Box>
         </Box>
@@ -96,4 +96,4 @@ function App() {
   );
 }
 
-export default App;
+export default Layout;

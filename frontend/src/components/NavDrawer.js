@@ -16,7 +16,9 @@ import {
   ListItemText,
   Toolbar,
 } from '@mui/material';
-import { menuItems } from '../config/menuItems';
+import { menuItems } from '../layouts/menuItems';
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // Add this styled component at the top of your file
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -31,19 +33,62 @@ export const NavigationMenu = ({ onItemClick, colors, activeRoute, onNavigate })
   return (
     <List>
       {menuItems.map((item) => (
-        <ListItem 
-          key={item.path}
-          className={activeRoute === item.path ? 'active' : ''}
-          onClick={() => {
-            if (onItemClick) onItemClick();
-            if (onNavigate) onNavigate(item.path);
-          }}
-        >
-          <Link to={item.path} style={{ display: 'flex', alignItems: 'center' }}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </Link>
-        </ListItem>
+        item.items ? (
+          <Accordion 
+            key={item.text}
+            sx={{
+              backgroundColor: 'transparent',
+              '&.MuiAccordion-root:before': {
+                display: 'none',
+              },
+            }}
+          >
+            <AccordionSummary 
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                '& .MuiAccordionSummary-expandIconWrapper': {
+                  color: colors?.text
+                }
+              }}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </AccordionSummary>
+            <AccordionDetails>
+              <List>
+                {item.items.map((subItem) => (
+                  <ListItem
+                    key={subItem.text}
+                    className={activeRoute === subItem.path ? 'active' : ''}
+                    onClick={() => {
+                      if (onItemClick) onItemClick();
+                      if (onNavigate) onNavigate(subItem.path);
+                    }}
+                  >
+                    <Link to={subItem.path} style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon>{subItem.icon}</ListItemIcon>
+                      <ListItemText primary={subItem.text} />
+                    </Link>
+                  </ListItem>
+                ))}
+              </List>
+            </AccordionDetails>
+          </Accordion>
+        ) : (
+          <ListItem 
+            key={item.path}
+            className={activeRoute === item.path ? 'active' : ''}
+            onClick={() => {
+              if (onItemClick) onItemClick();
+              if (onNavigate) onNavigate(item.path);
+            }}
+          >
+            <Link to={item.path} style={{ display: 'flex', alignItems: 'center' }}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </Link>
+          </ListItem>
+        )
       ))}
     </List>
   );
@@ -62,25 +107,7 @@ const NavDrawer = ({
   onNavigate
 }) => {
   const theme = useTheme();
-
-  const drawerColors = {
-    dark: {
-      background: '#190060',
-      text: '#a4b3b6',
-      hover: '#444444',
-      divider: 'rgba(255, 255, 255, 0.12)',
-      active: '#2f1178' // Add this line - darker shade for active item
-    },
-    light: {
-      background: '#ffffffS',
-      text: '#000000',
-      hover: '#e0e0e0',
-      divider: 'rgba(0, 0, 0, 0.12)',
-      active: '#e3f2fd' // Add this line - lighter blue shade for active item
-    }
-  };
-
-  const colors = darkMode ? drawerColors.dark : drawerColors.light;
+  const colors = theme.custom.drawer;
 
   const drawer = (
     <div>
@@ -145,4 +172,4 @@ const NavDrawer = ({
   );
 };
 
-export default NavDrawer;
+export default NavDrawer;  // Add this line to export the NavDrawer component

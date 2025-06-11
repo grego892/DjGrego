@@ -3,16 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { Box, CssBaseline } from '@mui/material';
 import { createAppTheme } from './theme/theme';
-import Header from './components/Header';
+import Header from './layouts/Header';
 import NavDrawer from './components/NavDrawer';
-import Home from './pages/Home';
-import Weather from './pages/Weather';
-import AddSong from './components/AddSong';
-import About from './pages/About';
-import Studio from './pages/Studio';
-import FileManager from './pages/FileManager';
-import AudioEditor from './pages/AudioEditor';
-import Setup from './pages/Setup';
+import { routes } from './routes/index'; // Add this import
+
 
 const drawerWidth = 200;
 
@@ -99,11 +93,11 @@ function App() {
           <Box
             component="main"
             sx={{ 
-              flexGrow: 1, 
-              p: 3,
+              flexGrow: 1,
+              height: "calc(100vh - 64px)",
+              marginTop: "64px",
+              overflow: 'hidden',
               width: { sm: `calc(100% - ${drawerOpen ? drawerWidth : 0}px)` },
-              marginTop: '64px',
-              //marginLeft: { sm: drawerOpen ? `${drawerWidth}px` : 0 },
               transition: theme.transitions.create(['margin', 'width'], {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
@@ -111,16 +105,13 @@ function App() {
             }}
           >
             <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/weather" element={<Weather />} />
-            <Route path="/add" element={<AddSong />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/studio" element={<Studio />} />
-            <Route path="/filemanager" element={<FileManager />} />
-            <Route path="/audioeditor" element={<AudioEditor />} />
-            <Route path="/setup" element={<Setup />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/addsong" element={<AddSong />} />
+              {routes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
             </Routes>
           </Box>
         </Box>
