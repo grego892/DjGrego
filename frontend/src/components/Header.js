@@ -30,8 +30,8 @@ const Header = ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
-        bgcolor: (theme) => darkMode ? '#00598e' : '#3399cc',
-        color: (theme) => darkMode ? '#ffffff' : '#333333'
+        bgcolor: (theme) => darkMode ? '#002660' : '#ffffff',
+        color: (theme) => darkMode ? '#a4b3b6' : '#000000'
 
       }}
     >
@@ -46,7 +46,7 @@ const Header = ({
           <MenuIcon />
         </IconButton>
         <Typography variant="h4" noWrap component="div" sx={{ flexGrow: 1 }}>
-          Audionix
+          DjGrego
         </Typography>
         <Box>
           <IconButton

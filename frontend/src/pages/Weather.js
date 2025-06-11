@@ -18,11 +18,13 @@ function Weather() {
     <Box
       sx={{
         width: '100%',
-        height: 'calc(100vh - 100px)', // Adjust based on your layout
+        height: 'calc(100vh - 120px)', // Adjust based on your layout
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden'
+
       }}
     >
       {isLoading && (

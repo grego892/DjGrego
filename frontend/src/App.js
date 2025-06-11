@@ -42,7 +42,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Box sx={{ display: 'flex' }}>
+        {/*<Box sx={{ display: 'flex' }}>*/}
+        <Box sx={{ display: 'flex', overflowX: 'hidden' }}>
           <CssBaseline />
 
           <Header
@@ -89,10 +90,10 @@ function App() {
             component="main"
             sx={{ 
               flexGrow: 1, 
-              p: 3, 
+              p: 3,
               width: { sm: `calc(100% - ${drawerOpen ? drawerWidth : 0}px)` },
               marginTop: '64px',
-              marginLeft: { sm: drawerOpen ? `${drawerWidth}px` : 0 },
+              //marginLeft: { sm: drawerOpen ? `${drawerWidth}px` : 0 },
               transition: theme.transitions.create(['margin', 'width'], {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,

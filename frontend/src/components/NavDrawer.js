@@ -38,14 +38,14 @@ const NavDrawer = ({
 
   const drawerColors = {
     dark: {
-      background: '#00598e',
-      text: '#ffffff',
+      background: '#190060',
+      text: '#a4b3b6',
       hover: '#444444',
       divider: 'rgba(255, 255, 255, 0.12)'
     },
     light: {
-      background: '#40beff',
-      text: '#333333',
+      background: '#ffffff',
+      text: '#000000',
       hover: '#e0e0e0',
       divider: 'rgba(0, 0, 0, 0.12)'
     }
