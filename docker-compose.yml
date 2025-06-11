@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: ./backend
+    # ...
+
+  frontend:
+    build: ./frontend
+    # ...
+
+#  audioplayer:
+#    build: ./audioserver
+    # ...
+
+#  mongodb:
+#    image: mongo:7
+#    ports:
+#      - "27017:27017"
+#    volumes:
+#      - mongodb_data:/data/db
+#      # Optional: Mount custom initialization scripts
+#      - ./db-init:/docker-entrypoint-initdb.d
+
+#volumes:
+#  mongodb_data:
