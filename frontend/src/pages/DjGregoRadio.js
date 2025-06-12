@@ -1,18 +1,18 @@
 import React from 'react';
-import { Typography } from '@mui/material';
+import {Box} from '@mui/material';
 
-function EntergyOutage() {
+function DjGregoRadio() {
   return (
-    <div>
+    <Box sx={{ height: '100%', overflow: 'hidden' }}>
       <iframe
         src="https://radio.djgrego.com/public/djgrego_radio"
-        title="Entergy Outage Map"
+        title="Weather"
         width="100%"
-        height="635px"
+        height="100%"
         style={{ border: 'none' }}
       />
-    </div>
+    </Box>
   );
 }
 
-export default EntergyOutage;
+export default DjGregoRadio;

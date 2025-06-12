@@ -1,17 +1,18 @@
 import React from 'react';
-import { Typography } from '@mui/material';
+import { Box } from '@mui/material';
+
 
 function EntergyOutage() {
   return (
-    <div>
+    <Box sx={{ height: '100%', overflow: 'hidden' }}>
       <iframe
         src="https://www.etrviewoutage.com/map?state=TX"
         title="Entergy Outage Map"
         width="100%"
-        height="635px"
+        height="100%"
         style={{ border: 'none' }}
       />
-    </div>
+    </Box>
   );
 }
 

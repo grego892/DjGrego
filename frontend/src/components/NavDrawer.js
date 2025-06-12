@@ -14,7 +14,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Toolbar,
 } from '@mui/material';
 import { menuItems } from '../layouts/menuItems';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
