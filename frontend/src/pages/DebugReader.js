@@ -1,17 +1,17 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-function AudioEditor() {
+function LogReader() {
   return (
     <div>
       <Typography variant="h4" gutterBottom>
-        Audio Editor
+        DebugReader
       </Typography>
       <Typography paragraph>
-        This is the Audio Editor page.
+
       </Typography>
     </div>
   );
 }
 
-export default AudioEditor;
+export default LogReader;

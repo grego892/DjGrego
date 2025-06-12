@@ -1,18 +1,12 @@
-FROM ubuntu:latest
-LABEL authors="gregdavis"
 
-ENTRYPOINT ["top", "-b"]
+FROM python:3.12-slim
 
-
-
-# Use an official Python runtime
-FROM python:3.11-slim
-
-# Set work directory
 WORKDIR /app
 
-# Install system dependencies if needed (e.g., for audio or database drivers)
-RUN apt-get update && apt-get install -y gcc ffmpeg && rm -rf /var/lib/apt/lists/*
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y gcc ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt .

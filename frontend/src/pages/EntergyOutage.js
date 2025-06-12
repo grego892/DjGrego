@@ -8,7 +8,7 @@ function EntergyOutage() {
         src="https://www.etrviewoutage.com/map?state=TX"
         title="Entergy Outage Map"
         width="100%"
-        height="900px"
+        height="635px"
         style={{ border: 'none' }}
       />
     </div>

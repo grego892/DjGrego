@@ -25,16 +25,16 @@ import { Link } from 'react-router-dom';
 
 // Separate reader items for the accordion
 export const readerItems = [
-  { text: 'Log Reader', icon: <ArticleIcon />, path: '/logReader' },
-  { text: 'Asrun Reader', icon: <ReceiptIcon />, path: '/asrunReader' },
-  { text: 'Debug Reader', icon: <AdbIcon />, path: '/debugReader' },
+  { text: 'Log Reader', icon: <ArticleIcon />, path: '/logreader' },
+  { text: 'Asrun Reader', icon: <ReceiptIcon />, path: '/asrunreader' },
+  { text: 'Debug Reader', icon: <AdbIcon />, path: '/debugreader' },
 ];
 
 export const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
   { text: 'Weather', icon: <ThunderstormIcon />, path: '/weather' },
   { text: 'Entergy Outage', icon: <ElectricalServicesIcon />, path: '/entergyoutage' },
-  { text: 'Traffic', icon: <TrafficIcon />, path: '/traffic' },
+  { text: 'Traffiq', icon: <TrafficIcon />, path: '/traffiq' },
   { text: 'Bird', icon: <TwitterIcon />, path: '/bird' },
   {
     text: 'Readers',

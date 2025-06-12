@@ -8,7 +8,7 @@ import NavDrawer from './components/NavDrawer';
 import { routes } from './routes/index'; // Add this import
 
 
-const drawerWidth = 200;
+const drawerWidth = 260;
 
 function App() {
   const [mobileOpen, setMobileOpen] = useState(false);

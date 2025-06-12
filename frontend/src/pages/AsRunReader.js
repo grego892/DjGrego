@@ -1,17 +1,17 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-function Studio() {
+function LogReader() {
   return (
     <div>
       <Typography variant="h4" gutterBottom>
-        Studio
+        AsRunReade
       </Typography>
       <Typography paragraph>
-        This is the studio page.
+
       </Typography>
     </div>
   );
 }
 
-export default Studio;
+export default LogReader;
