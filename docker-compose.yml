@@ -13,6 +13,12 @@ services:
       - backend
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "nginx", "-t" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 
   frontend:
     build:
@@ -31,6 +37,14 @@ services:
       - CORS_ORIGINS=https://djgrego.com
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    # Add restart policy
+    restart: unless-stopped
+
 
 
 networks:
