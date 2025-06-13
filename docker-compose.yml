@@ -1,20 +1,46 @@
+version: '3.8'
+
 services:
-  backend:
-    build: 
-      context: ./backend
+  nginx:
+    image: nginx:alpine
     ports:
-      - "8000:8000"
-    environment:
-      - CORS_ORIGIN=http://localhost:3000
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./backend:/app
-    restart: unless-stopped
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - frontend-build:/usr/share/nginx/html:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
 
   frontend:
-    build: 
+    build:
       context: ./frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend
-    restart: unless-stopped
+      dockerfile: frontend/Dockerfile
+    volumes:
+      - frontend-build:/app/build
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: backend/Dockerfile
+    expose:
+      - "8000"
+    environment:
+      - CORS_ORIGINS=https://djgrego.com
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  frontend-build:

@@ -1,30 +1,13 @@
-
 # Build stage
-FROM node:20-slim as build
-
+FROM node:18-alpine as build
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy source code
+RUN npm ci
 COPY . .
-
-# Build the app
 RUN npm run build
 
 # Production stage
 FROM nginx:alpine
-
-# Copy build files from build stage
 COPY --from=build /app/build /usr/share/nginx/html
-
-# Copy nginx configuration if you have custom settings
-# COPY nginx.conf /etc/nginx/conf.d/djgrego.com.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Add this to handle React Router
+COPY nginx.conf /etc/nginx/conf.d/djgrego.com.conf
