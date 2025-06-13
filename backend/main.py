@@ -1,4 +1,7 @@
+import os
 import uvicorn
+from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -17,9 +20,7 @@ class LogItem(BaseModel):
 
 app = FastAPI(debug=True)
 
-origins = [
-    "http://localhost:3000",
-]
+origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,6 +29,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.post("/upload-log")
 async def upload_log(file: UploadFile = File(...)):
