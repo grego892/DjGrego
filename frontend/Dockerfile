@@ -1,3 +1,4 @@
+
 # Build stage
 FROM node:18-alpine AS build
 WORKDIR /app
@@ -8,8 +9,5 @@ RUN npm run build
 
 # Production stage
 FROM nginx:alpine
-RUN mkdir -p /etc/nginx/certs
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/djgrego.com.conf
-COPY nginx/certs/djgrego.com.pem /etc/nginx/certs/
-COPY nginx/certs/djgrego.com.key /etc/nginx/certs/
+COPY nginx.conf /etc/nginx/conf.d/default.conf
