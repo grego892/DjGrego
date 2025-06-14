@@ -24,17 +24,14 @@ COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy application code
-COPY main.py .
+COPY . .  # Changed to copy all files instead of just main.py
 
 # Production settings
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
-ENV PORT=8000
 
-# Update the CORS origins for production
-ENV CORS_ORIGINS="https://djgrego.com"
-
+# Use environment variables from docker-compose
 EXPOSE 8000
 
-# Run with production server (using multiple workers)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+# Run with production server (using worker count based on CPU cores)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4", "--proxy-headers"]
