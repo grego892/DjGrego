@@ -23,15 +23,15 @@ WORKDIR /app
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Copy application code
-COPY . .  # Changed to copy all files instead of just main.py
+# Copy only necessary application files
+COPY main.py ./
+COPY requirements.txt ./
 
 # Production settings
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-# Use environment variables from docker-compose
 EXPOSE 8000
 
-# Run with production server (using worker count based on CPU cores)
+# Run with production server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4", "--proxy-headers"]
