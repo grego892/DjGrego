@@ -1,6 +1,8 @@
 services:
   nginx:
-    image: nginx:alpine
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile          # ← your multi-stage Dockerfile
     ports:
       - "80:80"
       - "443:443"
@@ -9,18 +11,9 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - /etc/ssl/djgrego.com:/etc/ssl/djgrego.com:ro
     depends_on:
-      - frontend
       - backend
     networks:
       - app-network
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    networks:
-      - app-network
-
   backend:
     build:
       context: ./backend
