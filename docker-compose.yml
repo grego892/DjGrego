@@ -11,7 +11,7 @@ services:
     volumes:
       - /etc/ssl/djgrego.com/djgrego.com.pem:/etc/nginx/certs/djgrego.com.pem:ro
       - /etc/ssl/djgrego.com/djgrego.com.key:/etc/nginx/certs/djgrego.com.key:ro
-      - ./nginx.conf:/etc/nginx/conf.d/djgrego.com.conf:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - app-network
     depends_on:
