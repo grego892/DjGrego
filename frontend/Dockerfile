@@ -9,4 +9,6 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget -q --spider http://localhost/ || exit 1
 

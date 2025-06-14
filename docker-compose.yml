@@ -7,8 +7,10 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./djgrego.com.conf:/etc/nginx/conf.d/djgrego.com.conf:ro
       - /etc/ssl/djgrego.com/djgrego.com.key:/etc/ssl/djgrego.com/djgrego.com.key:ro
       - /etc/ssl/djgrego.com/djgrego.com.pem:/etc/ssl/djgrego.com/djgrego.com.pem:ro
+      - frontend-build:/usr/share/nginx/html:ro
     depends_on:
       - frontend
       - backend
