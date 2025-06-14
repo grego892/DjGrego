@@ -1,21 +1,25 @@
-version: '3.8'
-
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+  nginx:
+    image: nginx:alpine
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - /etc/ssl/djgrego.com/djgrego.com.pem:/etc/nginx/certs/djgrego.com.pem:ro
-      - /etc/ssl/djgrego.com/djgrego.com.key:/etc/nginx/certs/djgrego.com.key:ro
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - /etc/ssl/djgrego.com:/etc/ssl/djgrego.com:ro  # Updated certificates path
+    depends_on:
+      - frontend
+      - backend
     networks:
       - app-network
-    depends_on:
-      - backend
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    networks:
+      - app-network
 
   backend:
     build:
@@ -28,6 +32,10 @@ services:
     networks:
       - app-network
 
+
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  frontend-build:
