@@ -1,4 +1,3 @@
-
 version: '3.8'
 
 services:
@@ -10,7 +9,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /etc/ssl/djgrego.com:/etc/nginx/certs:ro
+      - /etc/ssl/djgrego.com/djgrego.com.pem:/etc/nginx/certs/djgrego.com.pem:ro
+      - /etc/ssl/djgrego.com/djgrego.com.key:/etc/nginx/certs/djgrego.com.key:ro
       - ./nginx.conf:/etc/nginx/conf.d/djgrego.com.conf:ro
     networks:
       - app-network
