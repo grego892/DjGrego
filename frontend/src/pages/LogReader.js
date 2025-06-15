@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Button, 
+  Button,
   Box,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { ThemeProvider } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+// import the MUI color palettes
+import { teal, green, blue, cyan, purple, yellow } from '@mui/material/colors';
 
 function LogReader() {
   const [logData, setLogData] = useState([]);
@@ -13,28 +14,31 @@ function LogReader() {
     pageSize: 100,
     page: 0,
   });
-  
-  // Define color mapping for categories and sources
-  const categoryColors = {
-    'MACRO': '#e3f2fd',  // light blue
-    'COMMERCIAL': '#fff3e0', // light orange
-    'PROMO': '#e8f5e9',    // light green
-    'NEWS': '#fce4ec',     // light pink
+
+  // build your Colors lookup
+  const Colors = {
+    Teal:    { Default: teal[500] },
+    Green:   { Default: green[500] },
+    Blue:    { Lighten1: blue[300], Default: blue[500] },
+    Cyan:    { Default: cyan[500] },
+    Purple:  { Lighten2: purple[200] },
+    Yellow:  { Darken2: yellow[700] },
   };
 
-  const fromColors = {
-    'LIVE': '#ffebee',     // light red
-    'RECORDED': '#f3e5f5', // light purple
-    'AUTO': '#e0f7fa',     // light cyan
-    'TRAFFIC': '#e8f5e9'
-  };
-
+  // prioritized row‐styling rules
   const getRowClassName = (params) => {
-    const category = params.row.category?.toUpperCase();
-    const from = params.row.from?.toUpperCase();
-    return `category-${category} from-${from}`;
+    const cat = params.row.category?.toUpperCase() || '';
+    const frm = params.row.from?.toUpperCase()     || '';
+    if (cat === 'MACRO' && frm === 'CLOCKS')      return 'row-macro-clocks';
+    else if (frm === 'TRAFFIC')                   return 'row-traffic';
+    else if (cat === 'AUDIO' && frm === 'CLOCKS') return 'row-audio-clocks';
+    else if (cat === 'MACRO')                     return 'row-macro';
+    else if (cat === 'COMMENT')                   return 'row-comment';
+    else if (cat === '' && frm === 'MUSIC')       return 'row-music';
+    else if (cat === 'VTRACK')                    return 'row-vtrack';
+    else                                           return 'row-default';
   };
-  
+
   const theme = createTheme();
 
   const columns = [
@@ -78,31 +82,11 @@ function LogReader() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box 
-        sx={{ 
-          p: 3, 
-          height: 'calc(100vh - 64px)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'auto'
-        }}
-      >
-
-        <Button
-          variant="contained"
-          component="label"
-          sx={{ mb: 3,
-          width: '200px' }}
-        >
+      <Box sx={{ p: 3, height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
+        <Button variant="contained" component="label" sx={{ mb: 3, width: 200 }}>
           Upload XML File
-          <input
-            type="file"
-            accept=".xml"
-            hidden
-            onChange={handleFileUpload}
-          />
+          <input type="file" accept=".xml" hidden onChange={handleFileUpload} />
         </Button>
-
         <Box sx={{ flex: 1, minHeight: 0 }}>
           <DataGrid
             rows={logData}
@@ -115,26 +99,18 @@ function LogReader() {
             getRowClassName={getRowClassName}
             sx={{
               height: '100%',
-              '& .MuiDataGrid-main': {
-                overflow: 'auto'
-              },
-              // Category-based colors
-              ...Object.entries(categoryColors).reduce((acc, [category, color]) => ({
-                ...acc,
-                [`& .category-${category}`]: {
-                  backgroundColor: color,
-                  '&:hover': {
-                    backgroundColor: `${color} !important`,
-                  },
-                },
-              }), {}),
-              // From-based colors (as border or accent)
-              ...Object.entries(fromColors).reduce((acc, [from, color]) => ({
-                ...acc,
-                [`& .from-${from}`]: {
-                  borderLeft: `6px solid ${color}`,
-                },
-              }), {}),
+              '& .MuiDataGrid-main': { overflow: 'auto' },
+              // your new row color rules
+              '& .row-macro-clocks':    { backgroundColor: Colors.Teal.Default },
+              '& .row-traffic':         { backgroundColor: Colors.Green.Default },
+              '& .row-audio-clocks':    { backgroundColor: Colors.Blue.Lighten1 },
+              '& .row-macro':           { backgroundColor: Colors.Cyan.Default },
+              '& .row-comment':         { backgroundColor: Colors.Purple.Lighten2 },
+              '& .row-music':           { backgroundColor: Colors.Blue.Default },
+              '& .row-vtrack':          { backgroundColor: Colors.Yellow.Darken2 },
+              '& .row-default':         { backgroundColor: '#000000', color: '#ffffff' },
+              // keep hover state locked to the same bg
+              '& .MuiDataGrid-row:hover': { backgroundColor: 'inherit !important' },
             }}
           />
         </Box>
