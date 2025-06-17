@@ -1,3 +1,2 @@
-/nginx/certs/
-*.key
-*.pem
+.idea/
+.python-version
