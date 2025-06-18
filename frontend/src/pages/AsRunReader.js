@@ -91,6 +91,13 @@ function getRowClass(row) {
     case 'TIME':      return 'row-time';
     case 'SCHEDULED': return 'row-scheduled';
     case 'INFO':      return 'row-info';
+    case 'VOICETRACKS': return 'row-vtrack';
+    case 'MUSIC':     return 'row-music';
+    case 'VTRACK':    return 'row-vtrack';
+    case 'ERROR':     return 'row-error';
+    case 'SPOTS':     return 'row-spots';
+    case 'CARTS':   return 'row-carts';
+    case 'FILL':      return 'row-fill';
     default:
       return status === 'S' ? 'row-status-s' : '';
   }
@@ -98,26 +105,16 @@ function getRowClass(row) {
 
 
 
-  // ---------- custom row renderer -------------------------------------------
-  function ColoredRow(props) {
-    const extraClass = getRowClass(props.row);
-    return (
-      <Row
-        {...props}
-        className={extraClass
-          ? `${props.className ? props.className + ' ' : ''}${extraClass}`
-          : props.className}
-      />
-    );
-  }
+
 
   return (
+
     <div style={{
-      height: '100%',
+      height: 'calc(100vh - 64px)',
       display: 'flex',
       flexDirection: 'column',
-      gap: 12,
-      padding: 16
+      gap: 1,
+      padding: 8,
     }}>
       <div>
         <input
@@ -128,7 +125,7 @@ function getRowClass(row) {
             padding: '8px',
             border: '1px solid #ccc',
             borderRadius: '4px',
-            marginBottom: '16px'
+            marginBottom: '4px'
           }}
         />
       </div>
@@ -145,13 +142,20 @@ function getRowClass(row) {
           Please upload a .log file to view its contents
         </div>
       ) : (
-        <div style={{ flex: 1, height: '100%', overflow: 'auto' }}>
+      <div style={{
+        flex: 1,
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+
         <DataGrid
           columns={COLUMNS}
           rows={rows}
-          rowClass={getRowClass}                 /* <- simpler, public API */
+          rowClass={getRowClass}
           defaultColumnOptions={{ resizable: true, sortable: true }}
           className="rdg-light"
+          style={{ height: '100%' }}
         />
 
         </div>
