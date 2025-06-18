@@ -1,68 +1,59 @@
-import React, { useState } from 'react';
-import {
-  Button,
-  Box,
-} from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-// import the MUI color palettes
-import { teal, green, blue, cyan, purple, yellow } from '@mui/material/colors';
+
+import React, { useState, useCallback } from 'react';
+import { DataGrid } from 'react-data-grid';
+import 'react-data-grid/lib/styles.css';
+import { useTheme } from '@mui/material/styles';
+
+const COLUMNS = [
+  { key: 'id', name: 'ID', width: 90, resizable: true },
+  { key: 'scheduled', name: 'Scheduled', width: 130, resizable: true },
+  { key: 'actual', name: 'Actual', width: 130, resizable: true },
+  { key: 'name', name: 'Name', width: 130, resizable: true },
+  { key: 'length', name: 'Length', width: 130, resizable: true },
+  { key: 'category', name: 'Category', width: 130, resizable: true },
+  { key: 'from', name: 'From', width: 130, resizable: true },
+  { key: 'description', name: 'Description', width: 300, resizable: true }
+];
 
 function LogReader() {
   const [logData, setLogData] = useState([]);
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 100,
-    page: 0,
-  });
+  const [loading, setLoading] = useState(false);
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
 
-  // build your Colors lookup
-  const Colors = {
-    Teal:    { Default: teal[500] },
-    Green:   { Default: green[500] },
-    Blue:    { Lighten1: blue[300], Default: blue[500] },
-    Cyan:    { Default: cyan[500] },
-    Purple:  { Lighten2: purple[200] },
-    Yellow:  { Darken2: yellow[700] },
-  };
+  const getRowClassName = useCallback((row) => {
+    const cat = row.category?.toUpperCase() || '';
+    const frm = row.from?.toUpperCase() || '';
 
-  // prioritized row‐styling rules
-  const getRowClassName = (params) => {
-    const cat = params.row.category?.toUpperCase() || '';
-    const frm = params.row.from?.toUpperCase()     || '';
-    if (cat === 'MACRO' && frm === 'CLOCKS')      return 'row-macro-clocks';
-    else if (frm === 'TRAFFIC')                   return 'row-traffic';
-    else if (cat === 'AUDIO' && frm === 'CLOCKS') return 'row-audio-clocks';
-    else if (cat === 'MACRO')                     return 'row-macro';
-    else if (cat === 'COMMENT')                   return 'row-comment';
-    else if (cat === '' && frm === 'MUSIC')       return 'row-music';
-    else if (cat === 'VTRACK')                    return 'row-vtrack';
-    else                                           return 'row-default';
-  };
+    if (cat === 'MACRO' && frm === 'CLOCKS') return 'row-macro-clocks';
+    if (frm === 'TRAFFIC') return 'row-traffic';
+    if (cat === 'AUDIO' && frm === 'CLOCKS') return 'row-audio-clocks';
+    if (cat === 'MACRO') return 'row-macro';
+    if (cat === 'COMMENT') return 'row-comment';
+    if (cat === '' && frm === 'MUSIC') return 'row-music';
+    if (cat === 'VTRACK') return 'row-vtrack';
+    return 'row-default';
+  }, []);
 
-  const theme = createTheme();
+  const handleFileUpload = useCallback((event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'scheduled', headerName: 'Scheduled', width: 130 },
-    { field: 'actual', headerName: 'Actual', width: 130 },
-    { field: 'name', headerName: 'Name', width: 130 },
-    { field: 'length', headerName: 'Length', width: 130 },
-    { field: 'category', headerName: 'Category', width: 130 },
-    { field: 'from', headerName: 'From', width: 130 },
-    { field: 'description', headerName: 'Description', width: 300 },
-  ];
+    if (!file.name.toLowerCase().endsWith('.xml')) {
+      alert('Please choose a .xml file');
+      return;
+    }
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
+    setLoading(true);
     const reader = new FileReader();
 
     reader.onload = (e) => {
       const xmlText = e.target.result;
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-      
+
       const items = xmlDoc.getElementsByTagName('TProgramLogItem');
-      
+
       const rows = Array.from(items).map((item, index) => ({
         id: index,
         scheduled: item.getElementsByTagName('Scheduled')[0]?.textContent || '',
@@ -75,47 +66,66 @@ function LogReader() {
       }));
 
       setLogData(rows);
+      setLoading(false);
     };
 
     reader.readAsText(file);
-  };
+  }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ p: 3, height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
-        <Button variant="contained" component="label" sx={{ mb: 3, width: 200 }}>
-          Upload XML File
-          <input type="file" accept=".xml" hidden onChange={handleFileUpload} />
-        </Button>
-        <Box sx={{ flex: 1, minHeight: 0 }}>
+    <div style={{
+      height: 'calc(100vh - 64px)',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 1,
+      padding: 8,
+    }}>
+      <div>
+        <input
+          type="file"
+          accept=".xml"
+          onChange={handleFileUpload}
+          style={{
+            padding: '8px',
+            border: `1px solid ${isDarkMode ? theme.palette.divider : '#ccc'}`,
+            borderRadius: '4px',
+            marginBottom: '4px',
+            backgroundColor: isDarkMode ? theme.palette.background.paper : undefined,
+            color: isDarkMode ? theme.palette.text.primary : undefined,
+          }}
+        />
+      </div>
+
+      {loading && <div>Loading...</div>}
+
+      {logData.length === 0 && !loading ? (
+        <div style={{
+          padding: '20px',
+          textAlign: 'center',
+          background: isDarkMode ? theme.palette.background.paper : '#f5f5f5',
+          borderRadius: '4px',
+          color: isDarkMode ? theme.palette.text.primary : undefined,
+        }}>
+          Please upload a .xml file to view its contents
+        </div>
+      ) : (
+        <div style={{
+          flex: 1,
+          minHeight: 0,
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
           <DataGrid
+            columns={COLUMNS}
             rows={logData}
-            columns={columns}
-            disableRowSelectionOnClick
-            paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
-            pageSizeOptions={[100]}
-            rowCount={logData.length}
-            getRowClassName={getRowClassName}
-            sx={{
-              height: '100%',
-              '& .MuiDataGrid-main': { overflow: 'auto' },
-              // your new row color rules
-              '& .row-macro-clocks':    { backgroundColor: Colors.Teal.Default },
-              '& .row-traffic':         { backgroundColor: Colors.Green.Default },
-              '& .row-audio-clocks':    { backgroundColor: Colors.Blue.Lighten1 },
-              '& .row-macro':           { backgroundColor: Colors.Cyan.Default },
-              '& .row-comment':         { backgroundColor: Colors.Purple.Lighten2 },
-              '& .row-music':           { backgroundColor: Colors.Blue.Default },
-              '& .row-vtrack':          { backgroundColor: Colors.Yellow.Darken2 },
-              '& .row-default':         { backgroundColor: '#000000', color: '#ffffff' },
-              // keep hover state locked to the same bg
-              '& .MuiDataGrid-row:hover': { backgroundColor: 'inherit !important' },
-            }}
+            rowClass={getRowClassName}
+            defaultColumnOptions={{ resizable: true, sortable: true }}
+            className={isDarkMode ? "rdg-dark" : "rdg-light"}
+            style={{ height: '100%' }}
           />
-        </Box>
-      </Box>
-    </ThemeProvider>
+        </div>
+      )}
+    </div>
   );
 }
 

@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { DataGrid, Row } from 'react-data-grid';          // ⬅️  Row import added
+import { DataGrid, Row } from 'react-data-grid';
+import { useTheme } from '@mui/material/styles';
+// ⬅️  Row import added
 import Papa from 'papaparse';
 import 'react-data-grid/lib/styles.css';
 import './AsRunReader.css';                               // ⬅️  custom styles
@@ -23,6 +25,8 @@ const COLUMNS = [
 export default function AsRunReader() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
+    const theme = useTheme();
+    const isDarkMode = theme.palette.mode === 'dark';
 
   const handleFileChosen = useCallback(event => {
     const file = event.target.files?.[0];
@@ -115,6 +119,8 @@ function getRowClass(row) {
       flexDirection: 'column',
       gap: 1,
       padding: 8,
+            backgroundColor: isDarkMode ? theme.palette.background.default : undefined,
+      color: isDarkMode ? theme.palette.text.primary : undefined,
     }}>
       <div>
         <input
@@ -123,7 +129,7 @@ function getRowClass(row) {
           onChange={handleFileChosen}
           style={{
             padding: '8px',
-            border: '1px solid #ccc',
+            border: `1px solid ${isDarkMode ? theme.palette.divider : '#ccc'}`,
             borderRadius: '4px',
             marginBottom: '4px'
           }}
@@ -136,8 +142,9 @@ function getRowClass(row) {
         <div style={{
           padding: '20px',
           textAlign: 'center',
-          background: '#f5f5f5',
-          borderRadius: '4px'
+            background: isDarkMode ? theme.palette.background.paper : '#f5f5f5',
+            color: isDarkMode ? theme.palette.text.primary : undefined,
+            borderRadius: '4px'
         }}>
           Please upload a .log file to view its contents
         </div>
