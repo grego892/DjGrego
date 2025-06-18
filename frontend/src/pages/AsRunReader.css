@@ -1,0 +1,10 @@
+.row-macro      .rdg-cell { background:#009688;  color:#fff; } /* Teal        */
+.row-comment    .rdg-cell { background:#CE93D8;  color:#000; } /* Purple L2   */
+.row-audio      .rdg-cell { background:#42A5F5;  color:#000; } /* Blue L1     */
+.row-warning    .rdg-cell { background:#FBC02D;  color:#000; } /* Yellow D2   */
+.row-trigger    .rdg-cell { background:#FF9800;  color:#000; } /* Orange      */
+.row-time       .rdg-cell { background:#E91E63;  color:#fff; } /* Pink        */
+.row-scheduled  .rdg-cell { background:#9C27B0;  color:#fff; } /* Purple      */
+.row-info       .rdg-cell { background:#3F51B5;  color:#fff; } /* Indigo      */
+.row-status-s   .rdg-cell { background:#F44336;  color:#fff; } /* Red         */
+

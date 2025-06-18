@@ -1,25 +1,23 @@
 import React, { useState, useCallback } from 'react';
-import { DataGrid } from 'react-data-grid'; // Changed this line to use named import
+import { DataGrid, Row } from 'react-data-grid';          // ⬅️  Row import added
 import Papa from 'papaparse';
 import 'react-data-grid/lib/styles.css';
-
+import './AsRunReader.css';                               // ⬅️  custom styles
 
 // Define column structure based on the log format
 const COLUMNS = [
-  { key: 'status', name: 'Status', width: 60 },
-  { key: 'time', name: 'Time', width: 80 },
-  { key: 'dunno', name: 'dunno', width: 80 },
-  { key: 'passthrough', name: 'PassThrough', width: 70 },
-  { key: 'schedtime', name: 'Shed Time', width: 80 },
+  { key: 'status', name: '', width: 3 },
+  { key: 'playedtime', name: 'Played Time', width: 80 },
+  { key: 'schedtime', name: 'Sched Time', width: 80 },
+  { key: 'duration', name: 'Duration', width: 80 },
   { key: 'event', name: 'Event', width: 500 },
-  { key: 'category', name: 'Category', width: 80 },
-  { key: 'filename', name: 'filename', width: 200 },
-  { key: 'position', name: 'Position', width: 80 },
-  { key: 'title', name: 'title', width: 100 },
-  { key: 'subcategory', name: 'Subcategory', width: 100 },
-  { key: 'source', name: 'Source', width: 100 },
-  { key: 'modified', name: 'Modified', width: 150 },
-  { key: 'duration', name: 'Duration', width: 100 }
+  { key: 'filename', name: 'Filename', width: 200 },
+  { key: 'passthrough', name: 'PassTh', width: 70 },
+  { key: 'logposition', name: 'Position', width: 80 },
+  { key: 'eventtype', name: 'Event Type', width: 110 },
+  { key: 'folder', name: 'Folder', width: 100 },
+  { key: 'loadedfrom', name: 'Loaded From', width: 100 },
+  { key: 'datetime', name: 'datetime', width: 180 }
 ];
 
 export default function AsRunReader() {
@@ -58,23 +56,59 @@ export default function AsRunReader() {
       return {
         id: index,
         status: row[0] || '',
-        time: row[1] || '',
-        dunno: row[2] || '',
+        playedtime: row[1] || '',
+        logposition: row[2] || '',
         passthrough: row[3] || '',
         schedtime: row[4] || '',
-        type: row[5] || '',
-        category: row[6] || '',
+        filename: row[5] || '',
+        dunno: row[6] || '',
         event: row[7] || '',
-        position: row[8] || '',
-        title: row[9] || '',
-        subcategory: row[10] || '',
-        source: row[11] || '',
-        modified: row[12] || '',
-        duration: row[13] || ''
+        longfilename: row[8] || '',
+        dunno2: row[9] || '',
+        eventtype: row[10] || '',
+        folder: row[11] || '',
+        loadedfrom: row[12] || '',
+        datetime: row[13] || '',
+        duration: row[14] || '',
       };
     });
 
     setRows(parsedRows);
+  }
+
+  // ---------- helper ---------------------------------------------------------
+function getRowClass(row) {
+  // trim whitespace and compare in one consistent case
+  const type   = (row.eventtype || '').trim().toUpperCase();
+  const status = (row.status     || '').trim().toUpperCase();
+
+  switch (type) {
+    case 'MACRO':     return 'row-macro';
+    case 'COMMENT':   return 'row-comment';
+    case 'AUDIO':     return 'row-audio';
+    case 'WARNING':   return 'row-warning';
+    case 'TRIGGER':   return 'row-trigger';
+    case 'TIME':      return 'row-time';
+    case 'SCHEDULED': return 'row-scheduled';
+    case 'INFO':      return 'row-info';
+    default:
+      return status === 'S' ? 'row-status-s' : '';
+  }
+}
+
+
+
+  // ---------- custom row renderer -------------------------------------------
+  function ColoredRow(props) {
+    const extraClass = getRowClass(props.row);
+    return (
+      <Row
+        {...props}
+        className={extraClass
+          ? `${props.className ? props.className + ' ' : ''}${extraClass}`
+          : props.className}
+      />
+    );
   }
 
   return (
@@ -111,16 +145,15 @@ export default function AsRunReader() {
           Please upload a .log file to view its contents
         </div>
       ) : (
-        <div style={{ flex: 1, height: 'calc(100vh - 150px)' }}>
-          <DataGrid
-            columns={COLUMNS}
-            rows={rows}
-            defaultColumnOptions={{
-              resizable: true,
-              sortable: true
-            }}
-            className="rdg-light"
-          />
+        <div style={{ flex: 1, height: '100%', overflow: 'auto' }}>
+        <DataGrid
+          columns={COLUMNS}
+          rows={rows}
+          rowClass={getRowClass}                 /* <- simpler, public API */
+          defaultColumnOptions={{ resizable: true, sortable: true }}
+          className="rdg-light"
+        />
+
         </div>
       )}
     </div>
