@@ -56,5 +56,12 @@ async def upload_log(file: UploadFile = File(...)):
     
     return {"log_items": log_items}
 
+@app.get("/radar/latest")
+def get_radar_image_url():
+    # Example with NOAA nowCOAST WMS
+    return {
+        "wms_url": "https://nowcoast.noaa.gov/arcgis/services/nowcoast/radar_meteo_imagery_nexrad_time/MapServer/WMSServer"
+    }
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
