@@ -6,11 +6,9 @@ services:
       dockerfile: Dockerfile          # ← your multi-stage Dockerfile
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - /etc/ssl/djgrego.com:/etc/ssl/djgrego.com:ro
     depends_on:
       - backend
     networks:
@@ -23,7 +21,7 @@ services:
     expose:
       - "8000"
     environment:
-      - CORS_ORIGINS=https://djgrego.com
+      - CORS_ORIGINS=http://djgrego.com
     networks:
       - app-network
 
