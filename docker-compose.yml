@@ -3,7 +3,7 @@ services:
     restart: unless-stopped
     build:
       context: ./frontend
-      dockerfile: Dockerfile          # ← your multi-stage Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "80:80"
     volumes:
